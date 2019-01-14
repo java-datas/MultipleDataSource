@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+
+    <!-- 统计数据备份数据源 -->
+    <bean id="wz_consumer_bindDataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close"
+          parent="dataSourceParent">
+        <property name="url" value="jdbc:mysql://172.16.18.49:3306/wz_consumer_bind"/>
+        <property name="username" value="root"/>
+        <property name="password" value="123456"/>
+    </bean>
+
+    <bean id="wz_consumer_bindSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="wz_consumer_bindDataSource"/>
+        <property name="mapperLocations" value="classpath:mybatis/wzConsumerBind/*.xml"/>
+        <property name="configLocation" value="classpath:mybatis/sqlMapConfig.xml"/>
+        <property name="typeAliasesPackage" value="com.alimama.entity.wzConsumerBind.*"/>
+    </bean>
+
+    <bean id="wz_consumer_bindSqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg index="0" ref="wz_consumer_bindSqlSessionFactory"/>
+    </bean>
+
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer" >
+        <property name="sqlSessionFactoryBeanName" value="wz_consumer_bindSqlSessionFactory"/>
+        <property name="basePackage" value="com.alimama.dao.wzConsumerBind"/>
+        <property name="sqlSessionTemplateBeanName" value="wz_consumer_bindSqlSessionTemplate"/>
+    </bean>
+
+</beans>

@@ -1,0 +1,35 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd"
+       default-autowire= "byName">
+
+    <!-- 注解方式配置事务,在service中使用@Transactional使用事务,由于事务不能跨越数据库,必须指定value,比如consumer/credits -->
+    <tx:annotation-driven proxy-target-class="true" mode="proxy"/>
+    <!-- mode="aspectj" -->
+
+    <bean id="dataSourceParent" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close" abstract="true">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="maxTotal" value="30"/>
+        <property name="initialSize" value="5"/>
+        <property name="maxIdle" value="8"/>
+        <property name="minIdle" value="2"/>
+        <property name="maxWaitMillis" value="30000"/>
+        <property name="removeAbandonedOnMaintenance" value="true"/>
+        <property name="removeAbandonedTimeout" value="60"/>
+        <property name="logAbandoned" value="true"/>
+        <property name="testOnBorrow" value="false"/>
+        <property name="timeBetweenEvictionRunsMillis" value="90000"/>
+        <property name="minEvictableIdleTimeMillis" value="600000"/>
+        <property name="validationQuery" value="SELECT 1"/>
+        <property name="testWhileIdle" value="true"/>
+    </bean>
+
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+
+    <tx:annotation-driven proxy-target-class="true"/>
+
+</beans>

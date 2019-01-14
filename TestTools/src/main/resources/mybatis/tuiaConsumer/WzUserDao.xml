@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.alimama.dao.tuiaConsumer.WzUserDao" >
+    <resultMap id="wzUserResultMap" type="com.alimama.entity.tuiaConsumer.WzUserEntity">
+        <result property="userId" column="user_id"/>
+        <result property="appId" column="app_id"/>
+        <result property="deviceId" column="device_id"/>
+        <result property="phone" column="phone"/>
+        <result property="initialPassword" column="initial_password"/>
+        <result property="extInfo" column="ext_info"/>
+        <result property="vip" column="vip"/>
+        <result property="status" column="status"/>
+        <result property="optStatus" column="opt_status"/>
+        <result property="gmtCreate" column="gmt_create"/>
+    </resultMap>
+
+
+    <!--用户的登录数据-->
+    <select id="selectOneUser" parameterType="java.lang.Long" resultMap="wzUserResultMap">
+        select user_id,app_id,device_id,phone,initial_password,ext_info,vip,status,
+        opt_status,gmt_create
+        from tb_consumer_0000
+        WHERE user_id = #{userId};
+    </select>
+
+
+    <!--删除用户的登录数据-->
+    <delete id="deleteUser" parameterType="java.lang.Long" >
+        delete from tb_consumer_0000
+        WHERE user_id = #{userId};
+    </delete>
+
+    <!--更改VIP属性-->
+    <update id ="updateUserVip"  >
+        update tb_consumer_0000 set vip = #{vip} where user_id = #{userId};
+    </update>
+
+    <!--生成用户-->
+    <insert id ="registeredByPhone" parameterType="com.alimama.entity.tuiaConsumer.WzUserEntity">
+        insert into tb_consumer_0000(user_id,app_id,device_id,phone,initial_password,vip,status,
+        opt_status) VALUES (#{userId},#{appId},#{deviceId},#{phone},#{initialPassword},#{vip},#{status},#{optStatus}
+        )
+    </insert>
+
+
+</mapper>

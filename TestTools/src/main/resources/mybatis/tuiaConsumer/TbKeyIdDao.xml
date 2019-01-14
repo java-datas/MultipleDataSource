@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.alimama.dao.tuiaConsumer.TbKeyIdDao" >
+
+    <resultMap id="tableKeyIdMap" type="com.alimama.entity.tuiaConsumer.TbKeyEntity">
+        <result property="tableId" column="table_id"/>
+        <result property="tableName" column="table_name"/>
+    </resultMap>
+
+    <select id="getKeyIdByTableName" resultType="java.lang.Long">
+        select table_id
+        from tb_key_id
+        where table_name = #{tableName}
+    </select>
+
+    <update id="updateKeyId">
+        UPDATE tb_key_id SET table_id= #{keyId}
+        where table_name = #{tableName}
+    </update>
+
+</mapper>
